@@ -16,7 +16,7 @@ tNow00HhMmSs = date.truncate(t: tNow, unit: 1d)
 // 2024-02-06 00:00:00.000
 tNow00HhMmSsLoc = experimental.addDuration(d: -8h, to: tNow00HhMmSs)
 
-// 2024-02-05 07:58:00.000
+// 2024-02-05 23:58:00.000
 tYest58MmssLoc = experimental.addDuration(d: -2m, to: tNow00HhMmSsLoc)
 
 // 2024-02-07 08:00:00.000
