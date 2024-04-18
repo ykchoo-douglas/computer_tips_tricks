@@ -10,6 +10,19 @@
 - [SSH Remote development with VSCode][ssh_susan]
 - [VSCode Remote SSH Keeps disconnecting FIXED][swap_susan]
 
+lookup the domain to know the IP address is correct
+
+```
+$ nslookup mqtt.windblue.xyz
+
+Server:         127.0.0.53
+Address:        127.0.0.53#53
+
+Non-authoritative answer:
+Name:   mqtt.windblue.xyz
+Address: 152.42.182.200
+```
+
 ### Step 3 - UFW
 
 [ufw_DO]: https://www.digitalocean.com/community/tutorials/how-to-setup-a-firewall-with-ufw-on-an-ubuntu-and-debian-cloud-server
