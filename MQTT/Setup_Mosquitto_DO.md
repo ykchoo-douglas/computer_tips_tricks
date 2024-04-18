@@ -55,9 +55,17 @@ $ sudo nano /etc/default/ufw
 IPV6=yes
 ```
 
-disable and enable command for UFW
+check the status, disable and enable command for UFW
 
 ```
+$ sudo ufw status verbose
+Status: inactive
+// OR
+Status: active
+Logging: on (low)
+Default: deny (incoming), allow (outgoing), disabled (routed)
+New profiles: skip
+
 $ sudo ufw disable
 Output
 Firewall stopped and disabled on system startup
@@ -65,6 +73,10 @@ Firewall stopped and disabled on system startup
 $ sudo ufw enable
 Output
 Firewall is active and enabled on system startup
+
+$ ufw app list
+Available applications:
+  OpenSSH
 ```
 
 view the current configuration of UFW
@@ -146,6 +158,7 @@ check the cert.pem, chain.pem, privkey.pem available to refer to
 
 ```
 $ sudo ls /etc/letsencrypt/live/your_domain
+README  cert.pem  chain.pem  fullchain.pem  privkey.pem
 ```
 
 Certificates renewing automatically, but still need a way to run restart or reload the server to pick up the new certificates
@@ -189,9 +202,8 @@ $ sudo apt install mosquitto mosquitto-clients
 validate the installed broker
 
 ```
-$ sudo tail -f /var/log/mosquitto/mosquitto.log (terminal A)
-$ mosquitto_sub -h localhost -t test (terminal B)
-$ mosquitto_pub -h localhost -t test -m "hello world" (terminal C)
+$ mosquitto_sub -h localhost -t test (terminal A)
+$ mosquitto_pub -h localhost -t test -m "hello world" (terminal B)
 ```
 
 Configure the user and password
@@ -203,10 +215,11 @@ $ sudo mosquitto_passwd -c /etc/mosquitto/passwd sammy
 crerte a new configuration file for Mosquitto to use the password (end with .conf)
 
 ```
-$ sudo nano /etc/mosquitto/conf.d/default.conf
+$ sudo vim /etc/mosquitto/conf.d/default.conf
 ```
 
-paste the following
+- paste the following
+- add the trailing line at the bottom
 
 ```
 allow_anonymous false
@@ -219,19 +232,24 @@ restart the mosquitto to take effective
 $ sudo systemctl restart mosquitto
 ```
 
-validate the password is effective, the tail command can show the last command status
+- validate the password is effective
+- the tail command can show the last command status
+- change the `sammy` and `password`
 
 ```
-$ mosquitto_pub -h localhost -t "test" -m "hello world" -u "sammy" -P "password"
+$ sudo tail -f /var/log/mosquitto/mosquitto.log (terminal A)
+$ mosquitto_pub -h localhost -t "test" -m "hello world" -u "sammy" -P "password" (terminal B)
 ```
 
 link the ssl certificates
 
 ```
-$ sudo nano /etc/mosquitto/conf.d/default.conf
+$ sudo vim /etc/mosquitto/conf.d/default.conf
 ```
 
-add the followig lines
+- add the followig lines
+- change the `mqtt.example.com` to your domain
+- add the trailing line at the bottom
 
 ```
 . . .
@@ -243,26 +261,32 @@ cafile /etc/letsencrypt/live/mqtt.example.com/chain.pem
 keyfile /etc/letsencrypt/live/mqtt.example.com/privkey.pem
 ```
 
-restart the mosquitto and open the port 8883 in firewall
+- restart the mosquitto
+- open the port 8883 in firewall
 
 ```
 $ sudo systemctl restart mosquitto
 $ sudo ufw allow 8883
 ```
 
-validate the connection in SSL
+- validate the connection in SSL
+- change the `mqtt.example.com` to your domain
+- change the `sammy` and `password`
 
 ```
-$ mosquitto_pub -h mqtt.example.com -t test -m "hello again" -p 8883 --capath /etc/ssl/certs/ -u "sammy" -P "password"
+$ sudo tail -f /var/log/mosquitto/mosquitto.log (terminal A)
+$ mosquitto_pub -h mqtt.example.com -t test -m "hello again" -p 8883 --capath /etc/ssl/certs/ -u "sammy" -P "password" (terminal B)
 ```
 
 configure to use the Websockets
 
 ```
-$ sudo nano /etc/mosquitto/conf.d/default.conf
+$ sudo vim /etc/mosquitto/conf.d/default.conf
 ```
 
-add the followig lines
+- add the followig lines
+- change the `mqtt.example.com` to your domain
+- add the trailing line at the bottom
 
 ```
 . . .
@@ -273,15 +297,27 @@ cafile /etc/letsencrypt/live/mqtt.example.com/chain.pem
 keyfile /etc/letsencrypt/live/mqtt.example.com/privkey.pem
 ```
 
-restart the mosquitto and open the port 8083 in firewall
+- restart the mosquitto
+- open the port 8083 in firewall
 
 ```
 $ sudo systemctl restart mosquitto
 $ sudo ufw allow 8083
 ```
 
-test with MQTT client over websocket
+- validate MQTT client over websocket
+- change the `mqtt.example.com` to your domain
+- change the `sammy` and `password`
 
+```
+$ mosquitto_sub -h mqttwestcenter.windblue.xyz -t test  -p 8883 --capath /etc/ssl/certs/ -u "sammy" -P "password" (terminal A)
+$ mosquitto_pub -h mqttwestcenter.windblue.xyz -t test -m "hello again" -p 8883 --capath /etc/ssl/certs/ -u "sammy" -P "password" (terminal B)
+```
+
+HiveMQ Client Browser
+![alt text][capture]
+
+[capture]: ../MQTT/assets/HiveMQ_Browser%20Client.jpg 'HiveMQ Client Browser'
 [HiveMQ]: https://www.hivemq.com/demos/websocket-client/
 
 [MQTT client browser][HiveMQ]
