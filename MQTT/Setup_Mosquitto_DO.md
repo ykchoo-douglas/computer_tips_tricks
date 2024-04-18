@@ -23,7 +23,16 @@ Name:   mqtt.windblue.xyz
 Address: 152.42.182.200
 ```
 
-### Step 3 - UFW
+### Step 3 - Update and Upgrade
+
+update and upgrade the packages
+
+```
+$ sudo apt update
+$ sudo apt upgrade
+```
+
+### Step 4 - UFW
 
 [ufw_DO]: https://www.digitalocean.com/community/tutorials/how-to-setup-a-firewall-with-ufw-on-an-ubuntu-and-debian-cloud-server
 
@@ -88,20 +97,13 @@ $ sudo ufw status numbered
 $ sudo ufw delete 1
 ```
 
-### Step 4 - SSL
+### Step 5 - SSL
 
 [ssl_DO]: https://www.digitalocean.com/community/tutorials/how-to-use-certbot-standalone-mode-to-retrieve-let-s-encrypt-ssl-certificates-on-ubuntu-20-04
 [besn_tls]: https://medium.com/@besnikbelegu/enabling-tls-for-mosquitto-using-lets-encrypt-and-certbot-bf10bc863db
 
 - [How To Use Certbot Standalone Mode to Retrieve Let's Encrypt SSL Certificates on Ubuntu 20.04][ssl_DO]
 - [Enabling Transport Layer Security (TLS) for MQTT Mosquitto using Let's Encrypt and certbot][besn_tls]
-
-update and upgrade the packages
-
-```
-$ sudo apt update
-$ sudo apt upgrade
-```
 
 Certbot recommends using snap package for installation
 
@@ -164,7 +166,7 @@ run a Certbot dry run to make sure the syntax is ok
 $ sudo certbot renew --dry-run
 ```
 
-### Step 5 - Mosquitto
+### Step 6 - Mosquitto
 
 [mosq_DO]: https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-the-mosquitto-mqtt-messaging-broker-on-ubuntu-18-04#step-4-configuring-mqtt-over-websockets-optional
 [besn_setup]: https://medium.com/@besnikbelegu/setting-up-an-mqtt-server-part-1-87b7bd7d30fd
