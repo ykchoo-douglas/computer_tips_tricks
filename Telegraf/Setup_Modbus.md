@@ -173,3 +173,10 @@ Run multiple Telegraf Windows Services
 > .\telegraf.exe --config "C:\Program Files\InfluxData\Telegraf\AHU_OT1.conf" --service install --service-name telegraf-1 --service-display-name "Telegraf 1" --service-auto-restart
 > .\telegraf.exe --config "C:\Program Files\InfluxData\Telegraf\AHU_OT2.conf" --service install --service-name telegraf-2 --service-display-name "Telegraf 2" --service-auto-restart
 ```
+
+To uninstall Telegraf Windows Services
+
+```shell
+> .\telegraf.exe --service uninstall --service-name telegraf-1
+> .\telegraf.exe --service uninstall
+```
